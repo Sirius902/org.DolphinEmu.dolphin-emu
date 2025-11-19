@@ -43,12 +43,42 @@ modules:
           stable-only: true
           url-template: https://www.freedesktop.org/software/libevdev/libevdev-$version.tar.xz
 
+  - name: sdl3
+    buildsystem: cmake-ninja
+    config-opts:
+      - -DCMAKE_BUILD_TYPE=Release
+      - -DSDL_SHARED=OFF
+      - -DSDL_STATIC=ON
+      - -DSDL_TEST_LIBRARY=OFF
+      - -DSDL_TESTS=OFF
+      - -DSDL_DISABLE_INSTALL=ON
+      - -DSDL_DISABLE_INSTALL_DOCS=ON
+      - -DSDL_INSTALL_TESTS=OFF
+      - -DSDL_UNIX_CONSOLE_BUILD=ON
+      - -DSDL_AUDIO=OFF
+      - -DSDL_VIDEO=OFF
+      - -DSDL_GPU=OFF
+      - -DSDL_RENDER=OFF
+      - -DSDL_CAMERA=OFF
+      - -DSDL_DIALOG=OFF
+    cleanup:
+      - /include
+      - /lib/*.a
+      - /lib/cmake
+      - /lib/pkgconfig
+    sources:
+      - type: git
+        url: https://github.com/libsdl-org/SDL.git
+        tag: preview-3.3.2
+        commit: b31c4b70b3031dc4eb873612d65595a31b439a30
+
   - name: dolphin-emu
     buildsystem: cmake-ninja
     config-opts:
       - -DCMAKE_BUILD_TYPE=Release
       - -DENABLE_ALSA=OFF
       - -DENABLE_SDL=ON
+      - -DUSE_SYSTEM_SDL3=ON
       - -DENABLE_EVDEV=ON
       - -DDISTRIBUTOR=Flathub
     cleanup:
