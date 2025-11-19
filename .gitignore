@@ -1,3 +1,7 @@
 /.flatpak-builder/
 /build/
 /repo/
+
+/.direnv/
+/result
+/result-*
