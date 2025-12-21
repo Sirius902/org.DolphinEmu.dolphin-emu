@@ -27,7 +27,12 @@
           runtimeInputs = buildInputs;
 
           text = ''
-            flatpak-builder --user --install --force-clean build org.DolphinEmu.dolphin-emu.yml
+            flatpak-builder --user \
+              --install \
+              --force-clean \
+              --install-deps-from=flathub \
+              build \
+              org.DolphinEmu.dolphin-emu.yml
           '';
         };
 
