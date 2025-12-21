@@ -69,8 +69,8 @@ modules:
     sources:
       - type: git
         url: https://github.com/libsdl-org/SDL.git
-        tag: preview-3.3.2
-        commit: b31c4b70b3031dc4eb873612d65595a31b439a30
+        tag: prerelease-3.3.6
+        commit: ef0a604d44f5e44d4c1b34c215d68be5a985cd7e
 
   - name: dolphin-emu
     buildsystem: cmake-ninja
