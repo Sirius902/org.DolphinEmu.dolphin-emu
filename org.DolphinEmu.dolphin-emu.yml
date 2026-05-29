@@ -91,10 +91,10 @@ modules:
     sources:
       - type: git
         url: https://github.com/dolphin-emu/dolphin.git
-        commit: 5e7cc91d8c9a43ca189b288937f65c9763af9c22
+        commit: 9e7d340f22dd1c82b1efa6d0dbbf88632d5ac63c
         x-checker-data:
           type: json
-          url: https://dolphin-emu.org/update/latest/beta
+          url: https://dolphin-emu.org/update/latest/dev
           commit-query: .hash
           version-query: .shortrev
           timestamp-query: .date
