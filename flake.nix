@@ -1,5 +1,5 @@
 {
-  description = "Dolphin flatpak dev";
+  description = "Dolphin Emulator Flatpak";
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
@@ -14,30 +14,52 @@
       ];
 
       perSystem = {pkgs, ...}: let
-        buildInputs = [
-          pkgs.appstream
-          pkgs.flatpak-builder
+        appId = "org.DolphinEmu.dolphin-emu";
+        manifest = "${appId}.yml";
+        remoteName = "dolphin-dev";
+
+        runtimeInputs = with pkgs; [
+          appstream
+          flatpak
+          flatpak-builder
         ];
       in {
         formatter = pkgs.alejandra;
 
-        packages.build = pkgs.writeShellApplication {
-          name = "build";
+        packages = {
+          build = pkgs.writeShellApplication {
+            name = "build";
+            inherit runtimeInputs;
+            text = ''
+              flatpak-builder --user \
+                --install-deps-from=flathub \
+                --repo=repo \
+                build \
+                ${manifest}
+            '';
+          };
 
-          runtimeInputs = buildInputs;
+          install = pkgs.writeShellApplication {
+            name = "install";
+            inherit runtimeInputs;
+            text = ''
+              flatpak --user remote-add --if-not-exists --no-gpg-verify \
+                ${remoteName} repo
+              flatpak --user install --or-update --noninteractive \
+                ${remoteName} ${appId}
+            '';
+          };
 
-          text = ''
-            flatpak-builder --user \
-              --install \
-              --force-clean \
-              --install-deps-from=flathub \
-              build \
-              org.DolphinEmu.dolphin-emu.yml
-          '';
+          clean = pkgs.writeShellApplication {
+            name = "clean";
+            text = ''
+              rm -rf build repo .flatpak-builder
+            '';
+          };
         };
 
         devShells.default = pkgs.mkShellNoCC {
-          packages = buildInputs;
+          packages = runtimeInputs;
         };
       };
     };
